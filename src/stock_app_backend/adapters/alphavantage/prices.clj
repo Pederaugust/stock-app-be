@@ -1,9 +1,11 @@
 (ns stock-app-backend.adapters.alphavantage.prices
   (:require [clojure.string :refer :all]
             [clojure.data.json :as json]
+            [clojure.edn :as edn]
+            [config.core :refer [env]]
             [stock-app-backend.common :refer :all]))
 
-(def api-key "VLH6ZNI2E67UJSWA")
+(def api-key (:alphav-api-key env))
 
 (def alpha-vantage-url "https://www.alphavantage.co/query?function=")
 
