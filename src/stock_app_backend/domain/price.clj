@@ -6,7 +6,8 @@
 (defn weekly-response
   [ticker]
   "returns a response containing the result of finding the weekly prices of a company"
-  (get-response (prices/weekly-closing-prices ticker)))
+  (let [prices (prices/weekly-closing-prices ticker)]
+  (get-response prices)))
 
 (defn last-response
   [ticker]

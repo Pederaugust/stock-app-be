@@ -9,12 +9,13 @@
 
 (defn lookup [ticker]
   (jdbc/query psql-db
-           ["SELECT name, ticker, sector, country FROM company WHERE ticker = ?" ticker]))
+           ["SELECT name, ticker, sector, country, currency FROM company WHERE ticker = ?" ticker]))
 
 (defn search
   [q]
-  (let [wildq (str "%" (upper-case q) "%")]
+  (let [wildcard (str q ":*")]
     (if (empty? q)
       []
       (jdbc/query psql-db
-                  ["SELECT name, ticker, sector, country  FROM company WHERE (UPPER(ticker) LIKE ?) OR (UPPER(name) LIKE ?) LIMIT 10" wildq wildq]))))
+                  ["SELECT name, ticker, sector, country, currency FROM company WHERE searchtext @@ to_tsquery('simple', ?)" wildcard])))
+  )

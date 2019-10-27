@@ -52,13 +52,16 @@
 
 (defn daily-closing-prices
   [ticker]
-  (-> (daily-time-series ticker)
-       get-close-from-time-series))
+  (try
+    (-> (daily-time-series ticker)
+       get-close-from-time-series)
+    (catch Exception e (str (.getMessage e)))))
 
 (defn weekly-closing-prices
   [ticker]
-  (-> (weekly-time-series ticker)
-      get-close-from-time-series))
+  (try (-> (weekly-time-series ticker)
+           get-close-from-time-series)
+       (catch Exception e (str (.getMessage e)))))
 
 
 (defn company-trading-info [ticker]
