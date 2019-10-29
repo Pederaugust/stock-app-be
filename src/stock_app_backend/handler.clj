@@ -4,24 +4,30 @@
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
             [clojure.data.json :as json]
             [stock-app-backend.domain.ticker :refer :all]
-            [stock-app-backend.domain.price :as prices]))
+            [stock-app-backend.domain.price :as prices]
+            [stock-app-backend.common :refer :all]))
 
 (defroutes app-routes
 
   (GET "/company/_search" [q]
-       (search-response q))
+       (-> (search-companies q)
+           get-response))
 
   (GET "/company/_lookup/:ticker" [ticker]
-       (lookup-response ticker))
+       (->(company-details ticker)
+          get-response))
 
   (GET "/daily/:ticker" [ticker]
-       (prices/daily-response ticker))
+       (-> (prices/daily-timeseries ticker)
+           get-response))
 
   (GET "/last/:ticker" [ticker]
-       (prices/last-response ticker))
+       (-> (prices/last-price-details ticker)
+           get-response))
 
   (GET "/weekly/:ticker" [ticker]
-       (prices/weekly-response ticker))
+       (-> (prices/weekly-timeseries ticker)
+           get-response))
 
   (route/not-found "Not Found"))
 

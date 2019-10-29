@@ -1,20 +1,16 @@
 
 (ns stock-app-backend.domain.ticker
   (:require [stock-app-backend.adapters.sql.tickers :as tickers]
-            [clojure.string :refer :all]
-            [stock-app-backend.common :refer :all]))
+            [clojure.string :refer :all]))
 
 
-(defn lookup-response
+(defn company-details
   [ ticker ]
-  "Returns a standard response containing a lookup result based on a ticker"
+  "company details based on a ticker"
   ( let [ fticker ( upper-case ticker ) ]
-       (-> ( tickers/lookup fticker )
-           ( first ,,,)
-           ( get-response ,,,))))
+   ( tickers/lookup fticker)))
 
-(defn search-response
+(defn search-companies
  [ query ]
-  "Returns a standard response containing a search result based on a query"
- (-> (tickers/search query)
-     (get-response ,,,)))
+  "returns many companies that match a query"
+  (tickers/search query))

@@ -3,18 +3,18 @@
             [stock-app-backend.adapters.alphavantage.prices :as prices]
             [stock-app-backend.common :refer :all]))
 
-(defn weekly-response
+(defn weekly-timeseries
   [ticker]
-  "returns a response containing the result of finding the weekly prices of a company"
+  "weekly prices of a company from ticker"
   (let [prices (prices/weekly-closing-prices ticker)]
-  (get-response prices)))
+  prices))
 
-(defn last-response
+(defn last-price-details
   [ticker]
-  "returns a response containing only the last prices of a company"
-  (get-response (prices/company-trading-info ticker)))
+  "last prices of a company from ticker"
+  (prices/company-trading-info ticker))
 
-(defn daily-response
+(defn daily-timeseries
   [ticker]
-  "returns a response containing the daily closing prices of a company"
-  (get-response (prices/daily-closing-prices ticker)))
+  "daily closing prices of a company from ticker"
+  (prices/daily-closing-prices ticker))

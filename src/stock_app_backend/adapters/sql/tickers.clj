@@ -8,8 +8,8 @@
 (def psql-db (:db env))
 
 (defn lookup [ticker]
-  (jdbc/query psql-db
-           ["SELECT name, ticker, sector, country, currency FROM company WHERE ticker = ?" ticker]))
+  (first (jdbc/query psql-db
+                     ["SELECT name, ticker, sector, country, currency FROM company WHERE ticker = ?" ticker])))
 
 (defn search
   [q]
@@ -17,5 +17,4 @@
     (if (empty? q)
       []
       (jdbc/query psql-db
-                  ["SELECT name, ticker, sector, country, currency FROM company WHERE searchtext @@ to_tsquery('simple', ?)" wildcard])))
-  )
+                  ["SELECT name, ticker, sector, country, currency FROM company WHERE searchtext @@ to_tsquery('simple', ?)" wildcard]))))
